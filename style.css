@@ -52,9 +52,6 @@ main {
   height: 150px;
   border-radius: 50%;
 }
-.player .mark {
-  font-size: 54px;
-}
 .player .score {
   display: flex;
   align-items: end;
@@ -75,6 +72,10 @@ main {
 
 }
 
+.border {
+  background-color: #fff;
+}
+
 .game-grid {
   --cell-size: 100px;
   display: grid;
@@ -82,4 +83,8 @@ main {
   place-items: center;
   grid-template-columns: repeat(3, var(--cell-size));
   grid-template-rows: repeat(3, var(--cell-size));
+}
+
+.mark {
+  font-size: 54px;
 }
