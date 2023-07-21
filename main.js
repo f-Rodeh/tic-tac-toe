@@ -33,3 +33,9 @@ const Player = function( name ) {
 
 const player1 = Player('Player 1');
 const player2 = Player('Player 2');
+
+const picturePlayerOne = document.querySelector('.player.one .pic');
+const picturePlayerTwo = document.querySelector('.player.two .pic');
+
+picturePlayerOne.setAttribute('src', player1.getPicture());
+picturePlayerTwo.setAttribute('src', player2.getPicture());
