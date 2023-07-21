@@ -39,7 +39,8 @@ main {
 }
 .player .name input {
   height: 1em;
-  width: 100px;
+  width: 10ch;
+  flex: 1;
   font: inherit;
   color: var(--main-txt);
   background: none;
