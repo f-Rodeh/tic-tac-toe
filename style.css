@@ -3,6 +3,11 @@
 :root {
   --main-bg: #111;
   --main-txt: #fefefe;
+  --primary-color: #8046FD;
+  --mark-x: #8046FD;
+  --mark-o: #E0D96C;
+  --low-contrast-txt: #B694FF;
+  --grid-gap: #444;
 }
 
 * {
@@ -61,15 +66,10 @@ main {
   font-size: 26px;
 }
 
-/* .mark[name='close-outline'] {
-  color: blue;
-} */
-
 .gameboard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  align-items: center; 
 }
 
 .border {
@@ -77,14 +77,51 @@ main {
 }
 
 .game-grid {
-  --cell-size: 100px;
   display: grid;
-  place-content: center;
-  place-items: center;
-  grid-template-columns: repeat(3, var(--cell-size));
-  grid-template-rows: repeat(3, var(--cell-size));
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  background-color: var(--grid-gap);
+  gap: 3px; /* draws border between elements */
+}
+
+.game-grid > * {
+  background-color: var(--main-bg);
+  padding: 24px;
 }
 
 .mark {
   font-size: 54px;
+}
+
+.mark[name='close-outline'] {
+  color: var(--mark-x);
+}
+
+.mark[name='ellipse-outline'] {
+  color: var(--mark-o);
+}
+
+button {
+  background-color: var(--primary-color);
+  border-radius: 6px;
+  border: none;
+  padding: 6px 24px;
+  font-family: inherit;
+  font-weight: bold;
+  font-size:1.2rem;
+}
+
+button.restart {
+  margin: 36px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+button ion-icon {
+  margin-bottom: 2px;
+}
+
+ion-icon {
+  --ionicon-stroke-width: 48px;
 }
