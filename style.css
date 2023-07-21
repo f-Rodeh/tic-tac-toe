@@ -10,6 +10,15 @@
   --grid-gap: #444;
 }
 
+:visited {
+  color: var(--primary-color);
+}
+
+::selection {
+  color: var(--main-txt);
+  background-color: var(--primary-color);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -19,6 +28,12 @@ body {
   color: var(--main-txt);
   font-family: 'Poppins', Helvetica, sans-serif;
   margin: 0;
+  min-height: 100vh;
+  
+  display: grid;
+  gap: 24px;
+  align-items: center;
+  grid-template-rows: 1fr auto;
 }
 
 main {
@@ -31,6 +46,7 @@ main {
   display: grid;
   justify-items: center;
   gap: 12px;
+  align-content: center;
 }
 .player .crown {
   width: 48px;
@@ -125,3 +141,33 @@ button ion-icon {
 ion-icon {
   --ionicon-stroke-width: 48px;
 }
+
+/* footer template style start*/
+footer {
+  display: grid;
+  place-items: center;
+  background-color: var(--surface-color, #222222);
+
+  padding: 36px 0;
+  gap: 24px;
+}
+
+footer a {
+  text-decoration: none;
+  font-size: 1.2rem;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 150ms ease-in-out;
+}
+
+footer a:hover {
+  scale: 1.1;
+}
+
+footer ion-icon {
+  color: var(--main-txt, #fefefe);
+  font-size: 40px;
+}
+/* footer template style end */
