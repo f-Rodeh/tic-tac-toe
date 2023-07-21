@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 :root {
   --main-bg: #111;
   --main-txt: #fefefe;
@@ -10,6 +12,7 @@
 body {
   background-color: var(--main-bg);
   color: var(--main-txt);
+  font-family: 'Poppins', Helvetica, sans-serif;
   margin: 0;
 }
 
@@ -22,6 +25,7 @@ main {
 .player {
   display: grid;
   justify-items: center;
+  gap: 12px;
 }
 .player .pic {
   width: 150px;
@@ -31,8 +35,16 @@ main {
 .player .mark {
   font-size: 40px;
 }
-.crown {
+.player .crown {
   width: 48px;
+}
+.player .score {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+
+  font-weight: bold;
+  font-size: 26px;
 }
 
 .gameboard {
