@@ -3,6 +3,10 @@
   --main-txt: #fefefe;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: var(--main-bg);
   color: var(--main-txt);
@@ -11,6 +15,7 @@ body {
 
 main {
   display: grid;
+  justify-items: center;
   grid-template-columns: repeat(3, auto);
 }
 
@@ -28,4 +33,20 @@ main {
 }
 .crown {
   width: 48px;
+}
+
+.gameboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.game-grid {
+  --cell-size: 100px;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  grid-template-columns: repeat(3, var(--cell-size));
+  grid-template-rows: repeat(3, var(--cell-size));
 }
