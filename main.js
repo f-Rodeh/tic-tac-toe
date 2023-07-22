@@ -1,6 +1,15 @@
 // game module
 
-// board module
+const DisplayController = (function(){
+
+  return {}
+})(); //IIFE module
+
+const Board = (function(){
+  let _boardArray = [];
+
+  return {}
+})(); //IIFE module
 
 const Player = function( name ) {
   let _mark = ''; // x | o
