@@ -43,7 +43,6 @@ const Game = (function(){
   let _activePlayer = PLAYER_1;
 
   const switchActivePlayer = function(){
-
     switch (_activePlayer) {
       case PLAYER_1:
         _activePlayer = PLAYER_2
@@ -65,14 +64,38 @@ const Game = (function(){
 })() // IIFE module
 
 const Board = (function(){
-  let _boardArray = new Array(9)
+  let _boardArray = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' ',]
 
   const addMark = function(mark, position){
     _boardArray[position-1] = mark;
+    if(_isResolved()) alert('Board resolved')
   }
 
   return {
     addMark,
+  }
+
+  function _isResolved() {
+    const board = _boardArray.join('');
+
+    const blocks = {
+      row1: board.substring(0,3),
+      row2: board.substring(3,6),
+      row3: board.substring(6,9),
+      colA: board[0] + board[3] + board[6],
+      colB: board[1] + board[4] + board[7],
+      colC: board[2] + board[5] + board[8],
+      diagonal1: board[0] + board[4] + board[8],
+      diagonal2: board[2] + board[4] + board[6],
+    }
+
+    for (const key in blocks) {
+      if (!Object.hasOwnProperty.call(blocks, key)) {return}
+
+      if(blocks[key].match('xxx|ooo')){
+        return true;
+      }
+    }
   }
 })(); //IIFE module
 
@@ -89,8 +112,8 @@ const Display = (function(){
 
     space.addEventListener('click', () => {
       const player = Game.getActivePlayer();
-      if(space.name){ return } // space is already taken
-      Board.addMark(player.getMark(), i);
+      if( space.name ){ return } // space is already taken
+      Board.addMark( player.getMark(), i );
       space.name = player.getMarkIcon();
       Game.switchActivePlayer();
     })
