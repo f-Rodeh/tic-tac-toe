@@ -64,15 +64,21 @@ const Game = (function(){
 })() // IIFE module
 
 const Board = (function(){
-  let _boardArray = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' ',]
+  let _boardArray = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' ',];
+  let _winner = '';
 
   const addMark = function(mark, position){
     _boardArray[position-1] = mark;
-    if(_isResolved()) alert('Board resolved')
+    if(_isResolved()) alert(`Winner: ${_winner}`)
+  }
+
+  const getWinnerMark = function(){
+    if(_winner) return _winner;
   }
 
   return {
     addMark,
+    getWinnerMark
   }
 
   function _isResolved() {
@@ -93,6 +99,7 @@ const Board = (function(){
       if (!Object.hasOwnProperty.call(blocks, key)) {return}
 
       if(blocks[key].match('xxx|ooo')){
+        _winner = blocks[key][1];
         return true;
       }
     }
