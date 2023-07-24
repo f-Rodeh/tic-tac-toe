@@ -17,10 +17,10 @@ const Game = (function(){
 })()
 
 const Board = (function(){
-  let _boardArray = [];
+  let _boardArray = new Array(9)
 
   const addMark = function(mark, position){
-    console.log(`Should add ${mark} in position ${position}`)
+    _boardArray[position-1] = mark;
   }
 
   return {
