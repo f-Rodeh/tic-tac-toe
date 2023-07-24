@@ -76,21 +76,22 @@ const Board = (function(){
   }
 })(); //IIFE module
 
-const DisplayController = (function(){
-  const picturePlayerOne = document.querySelector('.player.one .pic');
-  const picturePlayerTwo = document.querySelector('.player.two .pic');
+const Display = (function(){
+  const pictureP1 = document.querySelector('.player.one .pic');
+  const pictureP2 = document.querySelector('.player.two .pic');
 
-  picturePlayerOne.setAttribute('src', player1.getPicture());
-  picturePlayerTwo.setAttribute('src', player2.getPicture());
+  pictureP1.setAttribute('src', player1.getPicture());
+  pictureP2.setAttribute('src', player2.getPicture());
 
-  const _markSpaces = document.querySelectorAll('.mark');
-  for (let i = 0; i < _markSpaces.length; i++) {
-    const space = _markSpaces[i];
+  const _boardSpaces = document.querySelectorAll('.mark');
+  for (let i = 0; i < _boardSpaces.length; i++) {
+    const space = _boardSpaces[i];
 
     space.addEventListener('click', () => {
+      const player = Game.getActivePlayer();
       if(space.name){ return } // space is already taken
-      Board.addMark(Game.getActivePlayer().getMark(), i);
-      space.name = Game.getActivePlayer().getMarkIcon();
+      Board.addMark(player.getMark(), i);
+      space.name = player.getMarkIcon();
       Game.switchActivePlayer();
     })
   }
