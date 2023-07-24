@@ -19,7 +19,13 @@ const Game = (function(){
 const Board = (function(){
   let _boardArray = [];
 
-  return {}
+  const addMark = function(mark, position){
+    console.log(`Should add ${mark} in position ${position}`)
+  }
+
+  return {
+    addMark,
+  }
 })(); //IIFE module
 
 const Player = function( name ) {
@@ -60,6 +66,15 @@ const DisplayController = (function(){
 
   picturePlayerOne.setAttribute('src', player1.getPicture());
   picturePlayerTwo.setAttribute('src', player2.getPicture());
+
+  const _markSpaces = document.querySelectorAll('.mark');
+  for (let i = 0; i < _markSpaces.length; i++) {
+    const space = _markSpaces[i];
+    space.addEventListener('click', () => {
+      Board.addMark('mark', i);
+      space.name = 'close-outline';
+    })
+  }
 
   return {}
 })(); //IIFE module
