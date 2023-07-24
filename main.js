@@ -1,35 +1,4 @@
-const Game = (function(){
-  const PLAYER_1 = 0;
-  const PLAYER_2 = 1;
-
-  let _activePlayer = PLAYER_1;
-
-  const switchActivePlayer = function(){
-    if (_activePlayer = PLAYER_1){
-      _activePlayer = PLAYER_2;
-    }
-    _activePlayer = PLAYER_1;
-  }
-
-  return {
-    switchActivePlayer,
-  }
-})()
-
-const Board = (function(){
-  let _boardArray = new Array(9)
-
-  const addMark = function(mark, position){
-    _boardArray[position-1] = mark;
-  }
-
-  return {
-    addMark,
-  }
-})(); //IIFE module
-
-const Player = function( name ) {
-  let _mark = ''; // x | o
+const Player = function( name, mark) {
   let _picture = _randomizePicture();
 
   const getPicture = function(){
@@ -37,13 +6,18 @@ const Player = function( name ) {
   }
 
   const getMark = function (){
-    return _mark;
+    return mark;
+  }
+
+  const getMarkIcon = function (){
+    return mark === 'x' ? 'close-outline' : 'ellipse-outline';
   }
 
   return {
     name,
     getPicture,
     getMark,
+    getMarkIcon
   }
 
   // private methods
@@ -57,8 +31,50 @@ const Player = function( name ) {
   }
 }
 
-const player1 = Player('Player 1');
-const player2 = Player('Player 2');
+const player1 = Player('Player 1', 'x');
+const player2 = Player('Player 2', 'o');
+
+const players = [player1, player2]
+
+const Game = (function(){
+  const PLAYER_1 = 0;
+  const PLAYER_2 = 1;
+
+  let _activePlayer = PLAYER_1;
+
+  const switchActivePlayer = function(){
+
+    switch (_activePlayer) {
+      case PLAYER_1:
+        _activePlayer = PLAYER_2
+        break;
+      case PLAYER_2:
+        _activePlayer = PLAYER_1
+        break;
+    }
+  }
+
+  const getActivePlayer = function(){
+    return players[_activePlayer];
+  }
+
+  return {
+    switchActivePlayer,
+    getActivePlayer
+  }
+})() // IIFE module
+
+const Board = (function(){
+  let _boardArray = new Array(9)
+
+  const addMark = function(mark, position){
+    _boardArray[position-1] = mark;
+  }
+
+  return {
+    addMark,
+  }
+})(); //IIFE module
 
 const DisplayController = (function(){
   const picturePlayerOne = document.querySelector('.player.one .pic');
@@ -70,9 +86,11 @@ const DisplayController = (function(){
   const _markSpaces = document.querySelectorAll('.mark');
   for (let i = 0; i < _markSpaces.length; i++) {
     const space = _markSpaces[i];
+
     space.addEventListener('click', () => {
       Board.addMark('mark', i);
-      space.name = 'close-outline';
+      space.name = Game.getActivePlayer().getMarkIcon();
+      Game.switchActivePlayer();
     })
   }
 
