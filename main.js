@@ -88,6 +88,7 @@ const DisplayController = (function(){
     const space = _markSpaces[i];
 
     space.addEventListener('click', () => {
+      if(space.name){ return } // space is already taken
       Board.addMark(Game.getActivePlayer().getMark(), i);
       space.name = Game.getActivePlayer().getMarkIcon();
       Game.switchActivePlayer();
