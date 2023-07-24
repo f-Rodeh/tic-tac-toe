@@ -1,4 +1,20 @@
-// game module
+const Game = (function(){
+  const PLAYER_1 = 0;
+  const PLAYER_2 = 1;
+
+  let _activePlayer = PLAYER_1;
+
+  const switchActivePlayer = function(){
+    if (_activePlayer = PLAYER_1){
+      _activePlayer = PLAYER_2;
+    }
+    _activePlayer = PLAYER_1;
+  }
+
+  return {
+    switchActivePlayer,
+  }
+})()
 
 const DisplayController = (function(){
 
