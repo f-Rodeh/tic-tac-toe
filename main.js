@@ -29,37 +29,47 @@ const Player = function( name, mark) {
 
     return `./img/pfp-${character}.jpg`
   }
-}
-
-const player1 = Player('Player 1', 'x');
-const player2 = Player('Player 2', 'o');
-
-const players = [player1, player2]
+} // factory function
 
 const Game = (function(){
-  const PLAYER_1 = 0;
-  const PLAYER_2 = 1;
+  const player1 = Player('Player 1', 'x');
+  const player2 = Player('Player 2', 'o');
 
-  let _activePlayer = PLAYER_1;
+  const _players = [player1, player2]
+
+  let _activePlayer = player1;
 
   const switchActivePlayer = function(){
     switch (_activePlayer) {
-      case PLAYER_1:
-        _activePlayer = PLAYER_2
+      case player1:
+        _activePlayer = player2
         break;
-      case PLAYER_2:
-        _activePlayer = PLAYER_1
+      case player2:
+        _activePlayer = player1
         break;
     }
   }
 
   const getActivePlayer = function(){
-    return players[_activePlayer];
+    return _activePlayer;
+  }
+
+  const getPlayerByMark = function(mark){
+    let output;
+    _players.forEach(player => {
+      if(player.getMark() === mark) {
+        output = player;
+      }
+    });
+    return output;                                             
   }
 
   return {
     switchActivePlayer,
-    getActivePlayer
+    getActivePlayer,
+    getPlayerByMark,
+    player1,
+    player2
   }
 })() // IIFE module
 
@@ -69,16 +79,17 @@ const Board = (function(){
 
   const addMark = function(mark, position){
     _boardArray[position-1] = mark;
-    if(_isResolved()) alert(`Winner: ${_winner}`)
+    if(_isResolved()) displayWinner();
   }
 
-  const getWinnerMark = function(){
-    if(_winner) return _winner;
+  const getWinner = function(){
+    if(!_winner) return;
+    return Game.getPlayerByMark(_winner);
   }
 
   return {
     addMark,
-    getWinnerMark
+    getWinner
   }
 
   function _isResolved() {
@@ -110,8 +121,8 @@ const Display = (function(){
   const pictureP1 = document.querySelector('.player.one .pic');
   const pictureP2 = document.querySelector('.player.two .pic');
 
-  pictureP1.setAttribute('src', player1.getPicture());
-  pictureP2.setAttribute('src', player2.getPicture());
+  pictureP1.setAttribute('src', Game.player1.getPicture());
+  pictureP2.setAttribute('src', Game.player2.getPicture());
 
   const _boardSpaces = document.querySelectorAll('.mark');
   for (let i = 0; i < _boardSpaces.length; i++) {
@@ -125,6 +136,10 @@ const Display = (function(){
       Game.switchActivePlayer();
     })
   }
-
   return {}
 })(); //IIFE module
+
+function displayWinner(){
+  const winner = Board.getWinner();
+  alert(`${winner.name} is the winner!`)
+}
