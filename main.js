@@ -219,6 +219,7 @@ const Score = (function(){
       }
     }
     if (board.match('[x|o]{9}')) {
+      _winnersMark = 'Tie';
       return true;
     }
   }
