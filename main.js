@@ -73,6 +73,7 @@ const Modal = function(title, action){
     _root.remove();
   }
 
+  _confirm.addEventListener('click', action)
   _deny.addEventListener('click', dismiss);
   _root.addEventListener('click', (e) => {
     if(e.target === _root) dismiss()
@@ -173,7 +174,10 @@ const Score = (function(){
       title = `${winner.name} wins!`
       msg = `Cool, huh? Let's play another round!`
     }
-    const congratsModal = Modal(title, makeNewRound);
+    const congratsModal = Modal(title, () => {
+      makeNewRound();
+      congratsModal.dismiss();
+    });
     congratsModal.setMessage(msg);
     congratsModal.display();
   }
