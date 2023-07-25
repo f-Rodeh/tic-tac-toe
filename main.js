@@ -83,7 +83,7 @@ const Board = (function(){
   }
 
   const getWinner = function(){
-    if(!_winner) return;
+    if(!_winner) return 'Tie';
     return Game.getPlayerByMark(_winner);
   }
 
@@ -94,6 +94,9 @@ const Board = (function(){
 
   function _isResolved() {
     const board = _boardArray.join('');
+    if (board.match('[x|o]{9}')) {
+      return true;
+    }
 
     const blocks = {
       row1: board.substring(0,3),
@@ -117,7 +120,7 @@ const Board = (function(){
   }
 })(); //IIFE module
 
-const Display = (function(){
+const DOMSetup = (function(){
   const pictureP1 = document.querySelector('.player.one .pic');
   const pictureP2 = document.querySelector('.player.two .pic');
 
@@ -141,5 +144,9 @@ const Display = (function(){
 
 function displayWinner(){
   const winner = Board.getWinner();
-  alert(`${winner.name} is the winner!`)
+  if(winner === 'Tie'){
+    alert("It's a tie!")
+  } else if(winner.name) {
+    alert(`${winner.name} is the winner!`)
+  } 
 }
