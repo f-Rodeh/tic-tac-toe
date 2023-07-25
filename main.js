@@ -1,12 +1,28 @@
-const Player = function( name, mark) {
-  let _picture = _randomizePicture();
+const Player = function(name, mark){
+  let _mark = mark;
+  let _picture = randomPicture();
 
   const getPicture = function(){
     return _picture;
   }
 
-  const getMark = function (){
-    return mark;
+  const changePicture = function(){
+    _picture = randomPicture();
+    return _picture;
+  }
+
+  const getMark = function(){
+    return _mark;
+  }
+
+  const toggleMark = function(){
+    if( _mark === 'x' ){
+      _mark = 'o'
+    } else if ( _mark === 'o' ){
+      _mark === 'x'
+    } else {
+      throw new Error('Invalid player mark');
+    }
   }
 
   const getMarkIcon = function (){
@@ -16,12 +32,13 @@ const Player = function( name, mark) {
   return {
     name,
     getPicture,
+    changePicture,
     getMark,
+    toggleMark,
     getMarkIcon
   }
 
-  // private methods
-  function _randomizePicture(){
+  function randomPicture(){
     const characters = ['asuka','gendo','kaji','maya','misato','penpen','rei','ritsuko','shinji']
     const random = Math.random() * characters.length;
     const index = Math.floor(random);
@@ -29,7 +46,7 @@ const Player = function( name, mark) {
 
     return `./img/pfp-${character}.jpg`
   }
-} // factory function
+}
 
 const Game = (function(){
   const player1 = Player('Player 1', 'x');
