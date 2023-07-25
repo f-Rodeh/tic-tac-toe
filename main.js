@@ -93,6 +93,11 @@ const Modal = function(title, msg){
     _root.remove();
   }
 
+  _deny.addEventListener('click', dismiss);
+  _root.addEventListener('click', (e) => {
+    if(e.target === _root) dismiss()
+  });
+
   return {
     display,
     dismiss
