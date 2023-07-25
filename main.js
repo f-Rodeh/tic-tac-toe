@@ -1,6 +1,11 @@
-const Player = function(name, mark){
+const Player = function(name, mark, id){
   let _mark = mark;
   let _picture = randomPicture();
+  const _id = id;
+
+  const getId = function(){
+    return _id;
+  }
 
   const getPicture = function(){
     return _picture;
@@ -35,7 +40,8 @@ const Player = function(name, mark){
     changePicture,
     getMark,
     toggleMark,
-    getMarkIcon
+    getMarkIcon,
+    getId
   }
 
   function randomPicture(){
@@ -94,8 +100,8 @@ const Modal = function(title, action){
 }
 
 const PlayerManager = (function(){
-  const player1 = Player('Player 1', 'x');
-  const player2 = Player('Player 2', 'o');
+  const player1 = Player('Player 1', 'x', 'player1');
+  const player2 = Player('Player 2', 'o', 'player2');
   const _players = [player1, player2];
 
   let _activePlayer = player1;
@@ -140,6 +146,10 @@ const PlayerManager = (function(){
 
 const Score = (function(){
   let _winnersMark;
+  let _scores = {
+    player1: 0,
+    player2: 0
+  }
 
   const evaluate = function( board ){
     board.join('');
@@ -149,7 +159,7 @@ const Score = (function(){
   }
 
   return {
-    evaluate
+    evaluate,
   }
 
   function displayWinner(){
@@ -159,6 +169,7 @@ const Score = (function(){
       title = `It's a tie!`;
       msg = `We can't leave it like that! Play another round?`;
     } else if ( winner.name ){
+      incrementScore(winner.getId());
       title = `${winner.name} wins!`
       msg = `Cool, huh? Let's play another round!`
     }
@@ -167,8 +178,16 @@ const Score = (function(){
     congratsModal.display();
   }
 
+  function incrementScore( id ){
+    _scores[id]++
+  }
+
   function updateScores(){
-    // TODO: build
+    const scoreP1 = document.querySelector('.one .score');
+    const scoreP2 = document.querySelector('.two .score');
+
+    scoreP1.textContent = _scores.player1;
+    scoreP2.textContent = _scores.player2;
   }
 
   function getLines(board){
