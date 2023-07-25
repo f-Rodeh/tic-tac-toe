@@ -127,9 +127,6 @@ const Board = (function(){
 
   function _isResolved() {
     const board = _boardArray.join('');
-    if (board.match('[x|o]{9}')) {
-      return true;
-    }
 
     const blocks = {
       row1: board.substring(0,3),
@@ -147,8 +144,13 @@ const Board = (function(){
 
       if(blocks[key].match('xxx|ooo')){
         _winner = blocks[key][1];
+        console.log('winner')
         return true;
       }
+    }
+
+    if (board.match('[x|o]{9}')) {
+      return true;
     }
   }
 })(); //IIFE module
