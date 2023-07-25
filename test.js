@@ -108,12 +108,16 @@ const Score = (function(){
   }
 
   function displayWinner(){
-    const congratsModal = Modal('Winner', makeNewRound);
+    let title, msg;
     if( _winner === 'Tie' ){
-      congratsModal.setMessage('TODO: set tie message');
+      title = `It's a tie!`;
+      msg = `We can't leave it like that! Play another round?`;
     } else if ( _winner.name ){
-      congratsModal.setMessage('TODO: set win message');
+      title = `${_winner.name} wins!`
+      msg = `Cool, huh? Let's play another round!`
     }
+    const congratsModal = Modal(title, makeNewRound);
+    congratsModal.setMessage(msg);
     congratsModal.display();
   }
 
