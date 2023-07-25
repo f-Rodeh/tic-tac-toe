@@ -93,8 +93,53 @@ const Modal = function(title, action){
   }
 }
 
+const PlayerManager = (function(){
+  const player1 = Player('Player 1', 'x');
+  const player2 = Player('Player 2', 'o');
+  const _players = [player1, player2];
+
+  let _activePlayer = player1;
+  const getActivePlayer = function(){
+    return _activePlayer;
+  }
+
+  const toggleActivePlayer = function(){
+    if( _activePlayer === player1 ){
+      _activePlayer = player2
+    } else if ( _activePlayer === player2 ){
+      _activePlayer = player1
+    } else {
+      throw new Error('Active player invalid');
+    }
+  }
+
+  const toggleMarks = function(){
+    player1.toggleMark;
+    player2.toggleMark;
+  }
+
+  const getPlayerByMark = function(mark){
+    let output;
+    _players.forEach(player => {
+      if(player.getMark() === mark) {
+        output = player;
+      }
+    });
+    return output;                                             
+  }
+
+  return {
+    player1,
+    player2,
+    getActivePlayer,
+    toggleActivePlayer,
+    toggleMarks,
+    getPlayerByMark
+  }
+})();
+
 const Score = (function(){
-  let _winner;
+  let _winnersMark;
 
   const evaluate = function( board ){
     board.join('');
@@ -108,12 +153,13 @@ const Score = (function(){
   }
 
   function displayWinner(){
+    const winner = PlayerManager.getPlayerByMark(_winnersMark);
     let title, msg;
-    if( _winner === 'Tie' ){
+    if( _winnersMark === 'Tie' ){
       title = `It's a tie!`;
       msg = `We can't leave it like that! Play another round?`;
-    } else if ( _winner.name ){
-      title = `${_winner.name} wins!`
+    } else if ( winner.name ){
+      title = `${winner.name} wins!`
       msg = `Cool, huh? Let's play another round!`
     }
     const congratsModal = Modal(title, makeNewRound);
@@ -145,46 +191,13 @@ const Score = (function(){
     for (const key in boardLines) {
       if (!Object.hasOwnProperty.call(boardLines, key)) {return}
       if(boardLines[key].match('xxx|ooo')){
-        _winner = boardLines[key][1];
+        _winnersMark = boardLines[key][1];
         return true;
       }
     }
     if (board.match('[x|o]{9}')) {
       return true;
     }
-  }
-})();
-
-const PlayerManager = (function(){
-  const player1 = Player('Player 1', 'x');
-  const player2 = Player('Player 2', 'o');
-  
-  let _activePlayer = player1;
-  const getActivePlayer = function(){
-    return _activePlayer;
-  }
-
-  const toggleActivePlayer = function(){
-    if( _activePlayer === player1 ){
-      _activePlayer = player2
-    } else if ( _activePlayer === player2 ){
-      _activePlayer = player1
-    } else {
-      throw new Error('Active player invalid');
-    }
-  }
-
-  const toggleMarks = function(){
-    player1.toggleMark;
-    player2.toggleMark;
-  }
-
-  return {
-    player1,
-    player2,
-    getActivePlayer,
-    toggleActivePlayer,
-    toggleMarks,
   }
 })();
 
