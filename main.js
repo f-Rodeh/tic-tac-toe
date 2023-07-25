@@ -89,6 +89,10 @@ const Modal = function(title, msg){
     document.body.append(_root);
   }
 
+  const setAction = function(action){
+    _confirm.addEventListener('click', action);
+  }
+
   const dismiss = function(){
     _root.remove();
   }
@@ -100,6 +104,7 @@ const Modal = function(title, msg){
 
   return {
     display,
+    setAction,
     dismiss
   }
 
@@ -125,9 +130,19 @@ const Board = (function(){
     return Game.getPlayerByMark(_winner);
   }
 
+  const reset = function(){
+    const _boardSpaces = document.querySelectorAll('.mark');
+    _boardSpaces.forEach(space => {
+      const empty = document.createElement('ion-icon');
+      empty.classList.add('mark')
+      space.replaceWith(empty);
+    })
+  }
+
   return {
     addMark,
-    getWinner
+    getWinner,
+    reset
   }
 
   function _isResolved() {
@@ -193,10 +208,17 @@ function displayWinner(){
   const playAgainPrompt = 'Have another round?';
   const winner = Board.getWinner();
   let congratsModal;
+
   if(winner === 'Tie'){
     congratsModal = Modal("It's a tie!", 'We cannot leave it like that! '+playAgainPrompt)
   } else if(winner.name) {
     congratsModal = Modal("We have a winner!", `${winner.name} Wins! ${playAgainPrompt}`)
   } 
+
+  congratsModal.setAction(()=>{
+    Board.reset();
+    congratsModal.dismiss();
+  })
+
   congratsModal.display();
 }
