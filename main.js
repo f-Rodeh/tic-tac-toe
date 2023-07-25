@@ -176,10 +176,13 @@ const DOMSetup = (function(){
 })(); //IIFE module
 
 function displayWinner(){
+  const playAgainPrompt = 'Have another round?';
   const winner = Board.getWinner();
+  let congratsModal;
   if(winner === 'Tie'){
-    alert("It's a tie!")
+    congratsModal = Modal("It's a tie!", 'We cannot leave it like that! '+playAgainPrompt)
   } else if(winner.name) {
-    alert(`${winner.name} is the winner!`)
+    congratsModal = Modal("We have a winner!", `${winner.name} Wins! ${playAgainPrompt}`)
   } 
+  congratsModal.display();
 }
