@@ -224,7 +224,7 @@ const Board = (function(){
   }
 })()
 
-function makeNewRound(){ // TODO: call
+function makeNewRound(){
   PlayerManager.toggleMarks;
   Board.reset();
 }
