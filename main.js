@@ -225,11 +225,12 @@ const Score = (function(){
 })();
 
 const Board = (function(){
-  const spaces = document.querySelectorAll('.gameboard .mark');
-  const board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
+  let spaces = document.querySelectorAll('.gameboard .mark');
+  let board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
   setListeners();
 
   const reset = function(){
+    board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
     spaces.forEach(space => {
       const empty = document.createElement('ion-icon');
       empty.classList.add('mark');
@@ -244,6 +245,7 @@ const Board = (function(){
   }
 
   function setListeners(){
+    spaces = document.querySelectorAll('.gameboard .mark');
     for (let i = 0; i < spaces.length; i++) {
       const space = spaces[i];
       space.addEventListener('click', () => {
