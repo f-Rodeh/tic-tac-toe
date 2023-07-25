@@ -168,7 +168,7 @@ const PlayerManager = (function(){
     if( _activePlayer === player1 ){
       _activePlayer = player2
     } else if ( _activePlayer === player2 ){
-      _activePlayer === player1
+      _activePlayer = player1
     } else {
       throw new Error('Active player invalid');
     }
@@ -189,7 +189,7 @@ const PlayerManager = (function(){
 })();
 
 const Board = (function(){
-  const spaces = document.querySelectorAll('.mark');
+  const spaces = document.querySelectorAll('.gameboard .mark');
   const board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
   setListeners();
 
@@ -220,8 +220,8 @@ const Board = (function(){
   function addMark( position ){
     if( spaces[position].name ) return;
     const activePlayer = PlayerManager.getActivePlayer();
-    board[position-1] = activePlayer.getMark;
-    spaces[position].name = activePlayer.getMarkIcon;
+    board[position] = activePlayer.getMark();
+    spaces[position].name = activePlayer.getMarkIcon();
     PlayerManager.toggleActivePlayer();
   }
 })()
