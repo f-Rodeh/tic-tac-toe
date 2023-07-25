@@ -49,9 +49,6 @@ main {
   gap: 12px;
   align-content: center;
 }
-.player .crown {
-  width: 48px;
-}
 .player .name {
   display: flex;
   align-items: baseline;
@@ -81,6 +78,13 @@ main {
 
   font-weight: bold;
   font-size: 26px;
+}
+
+.player .score.winning::before {
+  content: ' ';
+  background: center / contain no-repeat url('./img/crown/crown.png');
+  width: 48px;
+  height: 48px;
 }
 
 .gameboard {
