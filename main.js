@@ -174,6 +174,13 @@ const DOMSetup = (function(){
       Game.switchActivePlayer();
     })
   }
+
+  const nameP1 = document.querySelector('.one .name input');
+  const nameP2 = document.querySelector('.two .name input');
+
+  nameP1.addEventListener('focusout',() => Game.player1.name = nameP1.value);
+  nameP2.addEventListener('focusout',() => Game.player2.name = nameP2.value);
+
   return {}
 })(); //IIFE module
 
