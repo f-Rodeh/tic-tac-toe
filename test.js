@@ -185,7 +185,7 @@ const PlayerManager = (function(){
     toggleActivePlayer,
     toggleMarks,
   }
-})()
+})();
 
 const Board = (function(){
   const spaces = document.querySelectorAll('.mark');

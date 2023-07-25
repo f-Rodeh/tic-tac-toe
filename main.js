@@ -48,66 +48,19 @@ const Player = function(name, mark){
   }
 }
 
-const Game = (function(){
-  const player1 = Player('Player 1', 'x');
-  const player2 = Player('Player 2', 'o');
+const Modal = function(title, action){
 
-  const _players = [player1, player2]
+  const _root  = createElement('div', 'modal');
+  const _body  = createElement('div', 'body');
+  const _title = createElement('h1', 'title', title);
+  const _msg   = createElement('p', 'message');
 
-  let _activePlayer = player1;
+  const _actions = createElement('div', 'actions');
+  const _confirm = createElement('button', 'confirm', "Let's Go!");
+  const _deny    = createElement('button', 'deny', 'No thanks');
 
-  const switchActivePlayer = function(){
-    switch (_activePlayer) {
-      case player1:
-        _activePlayer = player2
-        break;
-      case player2:
-        _activePlayer = player1
-        break;
-    }
-  }
-
-  const getActivePlayer = function(){
-    return _activePlayer;
-  }
-
-  const getPlayerByMark = function(mark){
-    let output;
-    _players.forEach(player => {
-      if(player.getMark() === mark) {
-        output = player;
-      }
-    });
-    return output;                                             
-  }
-
-  return {
-    switchActivePlayer,
-    getActivePlayer,
-    getPlayerByMark,
-    player1,
-    player2
-  }
-})() // IIFE module
-
-const Modal = function(title, msg){
-  const _root = _createElement('div', 'modal');
-  const _body = _createElement('div', 'body');
-  const _title = _createElement('h1', 'title', title);
-  const _msg = _createElement('p', 'message', msg);
-  const _actions = _createElement('div', 'actions');
-  const _confirm = _createElement('button', 'confirm', "Let's Go!");
-  const _deny = _createElement('button', 'deny', 'No thanks');
-
-  const display = function(){
-    _actions.append(_confirm, _deny)
-    _body.append(_title, _msg, _actions);
-    _root.append(_body);
-    document.body.append(_root);
-  }
-
-  const setAction = function(action){
-    _confirm.addEventListener('click', action);
+  const setMessage = function(msg){
+    _msg.textContent = msg;
   }
 
   const dismiss = function(){
@@ -119,13 +72,20 @@ const Modal = function(title, msg){
     if(e.target === _root) dismiss()
   });
 
+  const display = function(){
+    _actions.append(_confirm, _deny)
+    _body.append(_title, _msg, _actions);
+    _root.append(_body);
+    document.body.append(_root);
+  }
+
   return {
+    setMessage,
     display,
-    setAction,
     dismiss
   }
 
-  function _createElement(type, cls, content =''){
+  function createElement(type, cls, content = ''){
     const element = document.createElement(type);
     element.classList.add(cls);
     element.textContent = content;
@@ -133,39 +93,40 @@ const Modal = function(title, msg){
   }
 }
 
-const Board = (function(){
-  let _boardArray = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' ',];
-  let _winner = '';
+const Score = (function(){
+  let _winner;
 
-  const addMark = function(mark, position){
-    _boardArray[position-1] = mark;
-    if(_isResolved()) displayWinner();
-  }
-
-  const getWinner = function(){
-    if(!_winner) return 'Tie';
-    return Game.getPlayerByMark(_winner);
-  }
-
-  const reset = function(){
-    const _boardSpaces = document.querySelectorAll('.mark');
-    _boardSpaces.forEach(space => {
-      const empty = document.createElement('ion-icon');
-      empty.classList.add('mark')
-      space.replaceWith(empty);
-    })
+  const evaluate = function( board ){
+    board.join('');
+    if(!isResolved( board )) return;
+    displayWinner();
+    updateScores();
   }
 
   return {
-    addMark,
-    getWinner,
-    reset
+    evaluate
   }
 
-  function _isResolved() {
-    const board = _boardArray.join('');
+  function displayWinner(){
+    let title, msg;
+    if( _winner === 'Tie' ){
+      title = `It's a tie!`;
+      msg = `We can't leave it like that! Play another round?`;
+    } else if ( _winner.name ){
+      title = `${_winner.name} wins!`
+      msg = `Cool, huh? Let's play another round!`
+    }
+    const congratsModal = Modal(title, makeNewRound);
+    congratsModal.setMessage(msg);
+    congratsModal.display();
+  }
 
-    const blocks = {
+  function updateScores(){
+    // TODO: build
+  }
+
+  function getLines(board){
+    return {
       row1: board.substring(0,3),
       row2: board.substring(3,6),
       row3: board.substring(6,9),
@@ -175,67 +136,113 @@ const Board = (function(){
       diagonal1: board[0] + board[4] + board[8],
       diagonal2: board[2] + board[4] + board[6],
     }
+  }
 
-    for (const key in blocks) {
-      if (!Object.hasOwnProperty.call(blocks, key)) {return}
+  function isResolved( boardArr ){
+    const board = boardArr.join('');
+    const boardLines = getLines(board);
 
-      if(blocks[key].match('xxx|ooo')){
-        _winner = blocks[key][1];
-        console.log('winner')
+    for (const key in boardLines) {
+      if (!Object.hasOwnProperty.call(boardLines, key)) {return}
+      if(boardLines[key].match('xxx|ooo')){
+        _winner = boardLines[key][1];
         return true;
       }
     }
-
     if (board.match('[x|o]{9}')) {
       return true;
     }
   }
-})(); //IIFE module
+})();
+
+const PlayerManager = (function(){
+  const player1 = Player('Player 1', 'x');
+  const player2 = Player('Player 2', 'o');
+  
+  let _activePlayer = player1;
+  const getActivePlayer = function(){
+    return _activePlayer;
+  }
+
+  const toggleActivePlayer = function(){
+    if( _activePlayer === player1 ){
+      _activePlayer = player2
+    } else if ( _activePlayer === player2 ){
+      _activePlayer === player1
+    } else {
+      throw new Error('Active player invalid');
+    }
+  }
+
+  const toggleMarks = function(){
+    player1.toggleMark;
+    player2.toggleMark;
+  }
+
+  return {
+    player1,
+    player2,
+    getActivePlayer,
+    toggleActivePlayer,
+    toggleMarks,
+  }
+})();
+
+const Board = (function(){
+  const spaces = document.querySelectorAll('.mark');
+  const board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
+  setListeners();
+
+  const reset = function(){
+    spaces.forEach(space => {
+      const empty = document.createElement('ion-icon');
+      empty.classList.add('mark');
+      space.replaceWith(empty);
+    });
+
+    setListeners();
+  }
+
+  return {
+    reset
+  }
+
+  function setListeners(){
+    for (let i = 0; i < spaces.length; i++) {
+      const space = spaces[i];
+      space.addEventListener('click', () => {
+        addMark(i);
+        Score.evaluate(board);
+      })
+    }
+  }
+
+  function addMark( position ){
+    if( spaces[position].name ) return;
+    const activePlayer = PlayerManager.getActivePlayer();
+    board[position-1] = activePlayer.getMark;
+    spaces[position].name = activePlayer.getMarkIcon;
+    PlayerManager.toggleActivePlayer();
+  }
+})()
 
 const DOMSetup = (function(){
   const pictureP1 = document.querySelector('.player.one .pic');
   const pictureP2 = document.querySelector('.player.two .pic');
 
-  pictureP1.setAttribute('src', Game.player1.getPicture());
-  pictureP2.setAttribute('src', Game.player2.getPicture());
-
-  const _boardSpaces = document.querySelectorAll('.mark');
-  for (let i = 0; i < _boardSpaces.length; i++) {
-    const space = _boardSpaces[i];
-
-    space.addEventListener('click', () => {
-      const player = Game.getActivePlayer();
-      if( space.name ){ return } // space is already taken
-      Board.addMark( player.getMark(), i );
-      space.name = player.getMarkIcon();
-      Game.switchActivePlayer();
-    })
-  }
+  pictureP1.setAttribute('src', PlayerManager.player1.getPicture());
+  pictureP2.setAttribute('src', PlayerManager.player2.getPicture());
 
   const nameP1 = document.querySelector('.one .name input');
   const nameP2 = document.querySelector('.two .name input');
 
-  nameP1.addEventListener('focusout',() => Game.player1.name = nameP1.value);
-  nameP2.addEventListener('focusout',() => Game.player2.name = nameP2.value);
+  nameP1.addEventListener('focusout',() => PlayerManager.player1.name = nameP1.value);
+  nameP2.addEventListener('focusout',() => PlayerManager.player2.name = nameP2.value);
 
   return {}
 })(); //IIFE module
 
-function displayWinner(){
-  const playAgainPrompt = 'Have another round?';
-  const winner = Board.getWinner();
-  let congratsModal;
-
-  if(winner === 'Tie'){
-    congratsModal = Modal("It's a tie!", 'We cannot leave it like that! '+playAgainPrompt)
-  } else if(winner.name) {
-    congratsModal = Modal("We have a winner!", `${winner.name} Wins! ${playAgainPrompt}`)
-  } 
-
-  congratsModal.setAction(()=>{
-    Board.reset();
-    congratsModal.dismiss();
-  })
-
-  congratsModal.display();
+function makeNewRound(){
+  PlayerManager.toggleMarks;
+  Board.reset();
 }
