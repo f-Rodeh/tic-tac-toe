@@ -93,11 +93,14 @@ const Modal = function(title, action){
   }
 }
 
-const ScoreManager = (function(){
+const Score = (function(){
+  let _winner;
+
   const evaluate = function( board ){
-    // decide the winner
+    board.join('');
+    if(!isResolved( board )) return;
     displayWinner();
-    // update the scores
+    updateScores();
   }
 
   return {
@@ -106,12 +109,44 @@ const ScoreManager = (function(){
 
   function displayWinner(){
     const congratsModal = Modal('Winner', makeNewRound);
-    if( winner === 'Tie' ){
+    if( _winner === 'Tie' ){
       congratsModal.setMessage('TODO: set tie message');
-    } else if ( winner.name ){
+    } else if ( _winner.name ){
       congratsModal.setMessage('TODO: set win message');
     }
     congratsModal.display();
+  }
+
+  function updateScores(){
+    // TODO: build
+  }
+
+  function getBoardLines(){
+    return {
+      row1: board.substring(0,3),
+      row2: board.substring(3,6),
+      row3: board.substring(6,9),
+      colA: board[0] + board[3] + board[6],
+      colB: board[1] + board[4] + board[7],
+      colC: board[2] + board[5] + board[8],
+      diagonal1: board[0] + board[4] + board[8],
+      diagonal2: board[2] + board[4] + board[6],
+    }
+  }
+
+  function isResolved( board ){
+    const boardLines = getBoardLines();
+
+    for (const key in boardLines) {
+      if (!Object.hasOwnProperty.call(boardLines, key)) {return}
+      if(boardLines[key].match('xxx|ooo')){
+        _winner = boardLines[key][1];
+        return true;
+      }
+    }
+    if (board.match('[x|o]{9}')) {
+      return true;
+    }
   }
 })();
 
@@ -134,18 +169,23 @@ const PlayerManager = (function(){
     }
   }
 
+  const toggleMarks = function(){
+    player1.toggleMark;
+    player2.toggleMark;
+  }
+
   return {
     player1,
     player2,
     getActivePlayer,
     toggleActivePlayer,
+    toggleMarks,
   }
 })()
 
 const Board = (function(){
   const spaces = document.querySelectorAll('.mark');
   const board = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' '];
-  let winner;
 
   const reset = function(){
     spaces.forEach(space => {
@@ -164,7 +204,10 @@ const Board = (function(){
   function setListeners(){
     for (let i = 0; i < spaces.length; i++) {
       const space = spaces[i];
-      space.addEventListener('click', addMark(i))
+      space.addEventListener('click', () => {
+        addMark(i);
+        Score.evaluate(board);
+      })
     }
   }
 
@@ -177,7 +220,7 @@ const Board = (function(){
   }
 })()
 
-function makeNewRound(){
-  // Assign the scores (player manager)
-  reset();
+function makeNewRound(){ // TODO: call
+  PlayerManager.toggleMarks;
+  Board.reset();
 }
