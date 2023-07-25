@@ -6,8 +6,9 @@
   --primary-color: #8046FD;
   --mark-x: #8046FD;
   --mark-o: #E0D96C;
-  --low-contrast-txt: #B694FF;
+  --low-contrast-txt: #9f9f9f;
   --grid-gap: #444;
+  --surface-color: #222222;
 }
 
 :visited {
@@ -171,3 +172,58 @@ footer ion-icon {
   font-size: 40px;
 }
 /* footer template style end */
+
+/* modal style */
+.modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+  
+  display: grid;
+  place-items: center;
+}
+
+.modal .body {
+  background-color: var(--surface-color);
+  height: 50%;
+  width: clamp(270px, 50%, 600px);
+  margin-bottom: 24px;
+  padding: 36px 5%;
+  border-radius: 24px;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+}
+
+.modal .body > * {
+  margin: 0;
+}
+
+.modal .body p {
+  color: var(--low-contrast-txt);
+}
+
+.modal button {
+  padding: 12px 24px;
+  min-width: max-content;
+}
+.modal .actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.modal .actions .confirm {
+  flex: 3;
+}
+.modal .actions .deny {
+  flex: 2;
+  background: none;
+  color: var(--primary-color);
+  border: 3px solid var(--primary-color);
+}

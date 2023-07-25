@@ -73,6 +73,39 @@ const Game = (function(){
   }
 })() // IIFE module
 
+const Modal = function(title, msg){
+  const _root = _createElement('div', 'modal');
+  const _body = _createElement('div', 'body');
+  const _title = _createElement('h1', 'title', title);
+  const _msg = _createElement('p', 'message', msg);
+  const _actions = _createElement('div', 'actions');
+  const _confirm = _createElement('button', 'confirm', "Let's Go!");
+  const _deny = _createElement('button', 'deny', 'No thanks');
+
+  const display = function(){
+    _actions.append(_confirm, _deny)
+    _body.append(_title, _msg, _actions);
+    _root.append(_body);
+    document.body.append(_root);
+  }
+
+  const dismiss = function(){
+    _root.remove();
+  }
+
+  return {
+    display,
+    dismiss
+  }
+
+  function _createElement(type, cls, content =''){
+    const element = document.createElement(type);
+    element.classList.add(cls);
+    element.textContent = content;
+    return element;
+  }
+}
+
 const Board = (function(){
   let _boardArray = [' ', ' ', ' ',' ', ' ', ' ',' ', ' ', ' ',];
   let _winner = '';
