@@ -3,6 +3,8 @@ const Player = function(name, mark, id){
   let _picture = randomPicture();
   const _id = id;
 
+  const domElement = document.querySelector(`.${id}`);
+
   const getId = function(){
     return _id;
   }
@@ -36,6 +38,7 @@ const Player = function(name, mark, id){
 
   return {
     name,
+    domElement,
     getPicture,
     changePicture,
     getMark,
@@ -106,6 +109,7 @@ const PlayerManager = (function(){
   const _players = [player1, player2];
 
   let _activePlayer = player1;
+  displayActivePlayer();
   const getActivePlayer = function(){
     return _activePlayer;
   }
@@ -118,6 +122,7 @@ const PlayerManager = (function(){
     } else {
       throw new Error('Active player invalid');
     }
+    displayActivePlayer();
   }
 
   const toggleMarks = function(){
@@ -142,6 +147,20 @@ const PlayerManager = (function(){
     toggleActivePlayer,
     toggleMarks,
     getPlayerByMark
+  }
+
+  function displayActivePlayer(){
+    _players.forEach(player => {
+      addActive(player);
+    })
+  }
+
+  function addActive(player){
+    if(player === _activePlayer){
+      player.domElement.classList.add('active');
+    } else {
+      player.domElement.classList.remove('active');
+    }
   }
 })();
 
