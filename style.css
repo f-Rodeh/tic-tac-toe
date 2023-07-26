@@ -4,7 +4,7 @@
   --main-bg: #111;
   --main-txt: #fefefe;
   --primary-color: #8046FD;
-  --mark-x: #8046FD;
+  --mark-x: rgb(128, 70, 253);
   --mark-o: #E0D96C;
   --low-contrast-txt: #9f9f9f;
   --grid-gap: #444;
@@ -48,7 +48,21 @@ main {
   justify-items: center;
   gap: 12px;
   align-content: center;
+
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 500ms ease-in-out;
 }
+
+.player.active {
+  background-color: var(--surface-color);
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.player.active::after {
+  content: 'Your turn!';
+}
+
 .player .name {
   display: flex;
   align-items: baseline;
