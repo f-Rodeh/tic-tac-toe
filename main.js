@@ -192,6 +192,21 @@ const Score = (function(){
 
     scoreP1.textContent = _scores.player1;
     scoreP2.textContent = _scores.player2;
+
+    addCrown(scoreP1, scoreP2);
+  }
+
+  function addCrown( elementP1, elementP2 ){
+    if(_scores.player1 === _scores.player2){
+      elementP1.classList.remove('winning');
+      elementP2.classList.remove('winning');
+    } else if(_scores.player1 > _scores.player2){
+      elementP1.classList.add('winning');
+      elementP2.classList.remove('winning');
+    } else {
+      elementP1.classList.remove('winning');
+      elementP2.classList.add('winning');
+    }
   }
 
   function getLines(board){
