@@ -312,6 +312,9 @@ const DOMSetup = (function(){
   nameP1.addEventListener('focusout',() => PlayerManager.player1.name = nameP1.value);
   nameP2.addEventListener('focusout',() => PlayerManager.player2.name = nameP2.value);
 
+  const resetButton = document.querySelector('.restart');
+  resetButton.addEventListener('click', Board.reset);
+
   return {}
 })(); //IIFE module
 
