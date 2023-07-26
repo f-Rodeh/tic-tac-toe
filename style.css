@@ -80,10 +80,28 @@ main {
   border: none;
   outline: none;
 }
-.player .pic {
+.player .pic,
+.pic img {
   width: 150px;
   height: 150px;
   border-radius: 50%;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.player .pic:hover::after {
+  box-sizing: border-box;
+  content: ' ';
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  padding: 12px;
+  background: rgba(120, 120, 190, 0.5) no-repeat center / 50% url('./img/icons/shuffle-outline.svg');
+  backdrop-filter: blur(1px);
 }
 .player .score {
   display: flex;

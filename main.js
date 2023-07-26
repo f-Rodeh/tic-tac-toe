@@ -300,11 +300,20 @@ const Board = (function(){
 })()
 
 const DOMSetup = (function(){
-  const pictureP1 = document.querySelector('.player.one .pic');
-  const pictureP2 = document.querySelector('.player.two .pic');
+  const pictureP1 = document.querySelector('.player.one .pic img');
+  const pictureP2 = document.querySelector('.player.two .pic img');
 
   pictureP1.setAttribute('src', PlayerManager.player1.getPicture());
   pictureP2.setAttribute('src', PlayerManager.player2.getPicture());
+
+  pictureP1.parentElement.addEventListener('click', ()=>{
+    PlayerManager.player1.changePicture();
+    pictureP1.setAttribute('src', PlayerManager.player1.getPicture());
+  })
+  pictureP2.parentElement.addEventListener('click', ()=>{
+    PlayerManager.player2.changePicture();
+    pictureP2.setAttribute('src', PlayerManager.player2.getPicture());
+  })
 
   const nameP1 = document.querySelector('.one .name input');
   const nameP2 = document.querySelector('.two .name input');
@@ -312,8 +321,8 @@ const DOMSetup = (function(){
   nameP1.addEventListener('focusout',() => PlayerManager.player1.name = nameP1.value);
   nameP2.addEventListener('focusout',() => PlayerManager.player2.name = nameP2.value);
 
-  const resetButton = document.querySelector('.restart');
-  resetButton.addEventListener('click', Board.reset);
+  // const resetButton = document.querySelector('.restart');
+  // resetButton.addEventListener('click', Board.reset);
 
   return {}
 })(); //IIFE module
